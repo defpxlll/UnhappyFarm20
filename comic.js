@@ -49,9 +49,16 @@ class load extends Phaser.Scene {
         });
         this.load.image('boil','assets/boil.png');
         this.load.image('carrot','assets/carrot.png');
-        // this.load.image('chicken0','assets/chicken0.png');
-        // this.load.image('chicken1','assets/chicken1.png');
-        // this.load.image('chicken2','assets/chicken2.gif');
+        this.load.image('cabbage','assets/cabbage.png');
+        this.load.image('potato','assets/potato.png');
+        this.load.image('chicken0','assets/chicken0.png');
+        this.load.image('chicken1','assets/chicken1.png');
+        this.load.spritesheet('chicken2','assets/chicken2.png',{
+            frameWidth:800,
+            frameHeight:800
+        });
+        this.load.image('pet','assets/pet.png');
+        this.load.image('kick','assets/kick.png');
         this.load.image('choice0','assets/choice0.png');
         this.load.image('choice1','assets/choice1.png');
         this.load.image('coffeehall','assets/coffeehall.png');
@@ -65,7 +72,9 @@ class load extends Phaser.Scene {
         this.load.image('desktop0','assets/desktop0.png');
         this.load.image('desktop1','assets/desktop1.png');
         this.load.image('desktop2','assets/desktop2.png');
-        this.load.image('dialogbox','assets/dialogbox.png');
+        this.load.image('dialogbox0','assets/dialogbox0.png');
+        this.load.image('dialogbox1','assets/dialogbox1.png');
+        this.load.image('dialogbox2','assets/dialogbox2.png');
         this.load.image('drinkcoffee','assets/drinkcoffee.png');
         this.load.image('eatnoodles','assets/eatnoodles.png');
         this.load.image('emptycup','assets/emptycup.png');
@@ -89,6 +98,8 @@ class load extends Phaser.Scene {
         this.load.image('farm1','assets/farm1.png');
         this.load.image('farm2','assets/farm2.png');
         this.load.image('farm3','assets/farm3.png');
+        this.load.image('farm3cabbage','assets/farm3cabbage.png');
+        this.load.image('farm3potato','assets/farm3potato.png');
         this.load.image('farm4','assets/farm4.png');
         this.load.spritesheet('frame0','assets/frame0.png',{
             frameWidth:600,
@@ -107,7 +118,6 @@ class load extends Phaser.Scene {
         this.load.image('hall4','assets/hall4.jpg');
         this.load.image('kettle0','assets/kettle0.png');
         this.load.image('kettle1','assets/kettle1.png');
-        // this.load.image('kickpet','assets/kickpet.png');
         this.load.image('kitchen0','assets/kitchen0.png');
         this.load.image('kitchen1','assets/kitchen1.png');
         this.load.spritesheet('load','assets/load.png',{
@@ -136,7 +146,13 @@ class load extends Phaser.Scene {
         this.load.image('phone0','assets/phone0.png');
         this.load.image('phone1','assets/phone1.png');
         this.load.image('phone2','assets/phone2.png');
-        this.load.image('phone3','assets/phone3.png');
+        this.load.image('phone30','assets/phone3.png');
+        this.load.image('phone31','assets/phone31.png');
+        this.load.image('phone32','assets/phone32.png');
+        this.load.image('phone33','assets/phone33.png');
+        this.load.image('phone34','assets/phone34.png');
+        this.load.image('phone35','assets/phone35.png');
+        this.load.image('phone36','assets/phone36.png');
         this.load.image('plantseeds','assets/plantseeds.png');
         this.load.image('pot0','assets/pot0.png');
         this.load.image('pot1','assets/pot1.png');
@@ -149,7 +165,10 @@ class load extends Phaser.Scene {
         this.load.image('seed4','assets/seed4.png');
         this.load.image('sleepnoodles','assets/sleepnoodles.png');
         this.load.image('mainmenu','assets/mainmenu.png');
-        this.load.image('fullscreen','assets/fullscreen.png');
+        this.load.spritesheet('startbutton','assets/startbutton.png',{
+            frameWidth:434,
+            frameHeight:87
+        });
         this.load.on('progress', function (value) {
             console.log(value);
             bar.clear();
@@ -190,6 +209,12 @@ class load extends Phaser.Scene {
             frames: 'alarm0',
             frameRate: 1,
             repeat: 0
+        });
+        this.anims.create({
+            key: 'chicken2gif',
+            frames: 'chicken2',
+            frameRate: 4,
+            repeat: -1
         });
         // this.scene.launch('ui0');
         this.scene.switch('mainmenu');

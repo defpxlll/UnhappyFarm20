@@ -78,22 +78,24 @@ class load extends Phaser.Scene {
         this.load.image('drinkcoffee','assets/drinkcoffee.png');
         this.load.image('eatnoodles','assets/eatnoodles.png');
         this.load.image('emptycup','assets/emptycup.png');
-        this.load.image('evbed','assets/evbed.png');
-        this.load.image('evbed1','assets/evbed1.png');
-        this.load.image('evbed2','assets/evbed2.png');
-        this.load.image('evhall0','assets/evhall0.png');
-        this.load.image('evhall1','assets/evhall1.png');
-        this.load.image('evhall2','assets/evhall2.png');
-        this.load.image('evhall3','assets/evhall3.png');
-        this.load.image('evhall4','assets/evhall4.png');
-        this.load.image('evhallbedroom','assets/evhallbedroom.png');
-        this.load.image('evhallkitchen','assets/evhallkitchen.png');
-        this.load.image('evkitchen0','assets/evkitchen0.png');
-        this.load.image('evkitchen1','assets/evkitchen1.png');
-        this.load.image('evpc0','assets/evpc0.png');
-        this.load.image('evpc1','assets/evpc1.png');
-        this.load.image('evpc2','assets/evpc2.png');
-        this.load.image('evpc3','assets/evpc3.png');
+        this.load.image('evbedroom','assets/evbedroom.png');
+        this.load.image('evlightbedroom','assets/evlightbedroom.png');
+        // this.load.image('evbed1','assets/evbed1.png');
+        // this.load.image('evbed2','assets/evbed2.png');
+        // this.load.image('evhall0','assets/evhall0.png');
+        // this.load.image('evhall1','assets/evhall1.png');
+        // this.load.image('evhall2','assets/evhall2.png');
+        // this.load.image('evhall3','assets/evhall3.png');
+        // this.load.image('evhall4','assets/evhall4.png');
+        // this.load.image('evhallbedroom','assets/evhallbedroom.png');
+        // this.load.image('evhallkitchen','assets/evhallkitchen.png');
+        this.load.image('evkitchen','assets/evkitchen.png');
+        this.load.image('evlightkitchen','assets/evlightkitchen.png');
+        // this.load.image('evkitchen1','assets/evkitchen1.png');
+        // this.load.image('evpc0','assets/evpc0.png');
+        // this.load.image('evpc1','assets/evpc1.png');
+        // this.load.image('evpc2','assets/evpc2.png');
+        // this.load.image('evpc3','assets/evpc3.png');
         this.load.image('farm0','assets/farm0.png');
         this.load.image('farm1','assets/farm1.png');
         this.load.image('farm2','assets/farm2.png');
@@ -105,21 +107,21 @@ class load extends Phaser.Scene {
             frameWidth:600,
             frameHeight:480
         });
-        this.load.image('frame1','assets/frame1.jpg');
-        this.load.image('frame2','assets/frame2.jpg');
-        this.load.image('frame3','assets/frame3.jpg');
+        this.load.image('bedroom','assets/bedroom.png');
+        // this.load.image('frame2','assets/frame2.jpg');
+        // this.load.image('frame3','assets/frame3.jpg');
         this.load.image('game','assets/game.png');
         this.load.image('gamestart','assets/gamestart.png');
         this.load.image('gotosleep','assets/gotosleep.png');
-        this.load.image('hall0','assets/hall0.jpg');
-        this.load.image('hall1','assets/hall1.jpg');
-        this.load.image('hall2','assets/hall2.jpg');
-        this.load.image('hall3','assets/hall3.jpg');
-        this.load.image('hall4','assets/hall4.jpg');
+        // this.load.image('hall0','assets/hall0.jpg');
+        // this.load.image('hall1','assets/hall1.jpg');
+        // this.load.image('hall2','assets/hall2.jpg');
+        // this.load.image('hall3','assets/hall3.jpg');
+        // this.load.image('hall4','assets/hall4.jpg');
         this.load.image('kettle0','assets/kettle0.png');
         this.load.image('kettle1','assets/kettle1.png');
-        this.load.image('kitchen0','assets/kitchen0.png');
-        this.load.image('kitchen1','assets/kitchen1.png');
+        this.load.image('kitchen','assets/kitchen.png');
+        // this.load.image('kitchen1','assets/kitchen1.png');
         this.load.spritesheet('load','assets/load.png',{
             frameWidth:800,
             frameHeight:640
@@ -138,10 +140,10 @@ class load extends Phaser.Scene {
             frameWidth:800,
             frameHeight:800
         });
-        this.load.image('pc0','assets/pc0.png');
-        this.load.image('pc1','assets/pc1.png');
-        this.load.image('pc2','assets/pc2.png');
-        this.load.image('pc3','assets/pc3.png');
+        this.load.image('pcbg','assets/pcbg.png');
+        // this.load.image('pc1','assets/pc1.png');
+        // this.load.image('pc2','assets/pc2.png');
+        // this.load.image('pc3','assets/pc3.png');
         this.load.image('pchall','assets/pchall.jpg');
         this.load.image('phone0','assets/phone0.png');
         this.load.image('phone1','assets/phone1.png');
@@ -169,6 +171,13 @@ class load extends Phaser.Scene {
             frameWidth:434,
             frameHeight:87
         });
+        this.load.image('hall','assets/hall.png');
+        this.load.image('evlighthall','assets/evlighthall.png');
+        this.load.image('evlightpc','assets/evlightpc.png');
+        this.load.spritesheet('char','assets/char.png',{
+            frameWidth:345,
+            frameHeight:1006
+        })
         this.load.on('progress', function (value) {
             console.log(value);
             bar.clear();

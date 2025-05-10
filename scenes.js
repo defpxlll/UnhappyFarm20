@@ -15,10 +15,12 @@ class mainmenu extends Phaser.Scene{
         super('mainmenu');
         this.clicks = 0;
         this.days = 1;
+        this.randomizer=[-1,-1,-1];
     }
     create(){
         this.registry.set('clicks', this.clicks);
         this.registry.set('days', this.days);
+        this.registry.set('rand',this.randomizer);
         this.add.image(925,540,'mainmenu');
         let btnsprite = this.add.sprite(1057,116,'startbutton').setOrigin(0,0);
         let btn = this.add.zone(1139,118,351,83).setOrigin(0,0).setInteractive({useHandCursor: true}).on('pointerover',()=>{
@@ -56,7 +58,6 @@ class ui extends Phaser.Scene{
         });
         this.registry.events.on('changedata', this.updateScore, this);
         this.input.on('pointerup',()=>{this.registry.set('clicks',this.registry.get('clicks')+1)},this);
-        this.add
     }
     updateScore(parent,key,data){
         this.scoreText.setText('день: '+this.registry.get('days')+'\nкликов: '+this.registry.get('clicks'));
@@ -93,33 +94,34 @@ class frame1 extends Phaser.Scene {
     create(){
         let dlg =["...", "Опять за полдень...","Чем заняться сегодня?"];
         let i = 0;
-        let frm = this.add.image(925,540,'frame1').setInteractive({useHandCursor: true});
+        let frm = this.add.image(925,540,'bedroom').setInteractive({useHandCursor: true});
+        //let char = this.add.sprite(858,436,'char');
         let ov = this.add.image(925,540,'overlay');
         this.scene.launch('dlg',[dlg[i],'0']);
-        frm.on(
-            'pointerup',
-            ()=>{
+        let frmb = this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true});
+        frmb.on('pointerup',()=>{
                 ++i;
                 if (i >= dlg.length){
                     this.scene.stop('dlg');
-                    frm.removeInteractive();
-                    this.add.image(925,540,'choice1');
+                    frmb.destroy();
+                    let chc = this.add.image(925,540,'choice1');
                     let left =this.add.zone(498,623,345,92).setOrigin(0,0);
                     left.setInteractive({useHandCursor: true}); 
                     let right =this.add.zone(1051,623,345,92).setOrigin(0,0);
                     right.setInteractive({useHandCursor: true});
-                    left.once('pointerup',()=>{
+                    left.on('pointerup',()=>{
                         left.destroy();
                         right.destroy();
-                        frm.destroy();
                         ov.destroy();
+                        chc.destroy();
+                        console.log(chc);
                         this.iteration(true);
                     },this);
-                    right.once('pointerup',()=>{
+                    right.on('pointerup',()=>{
                         left.destroy();
                         right.destroy();
-                        frm.destroy();
                         ov.destroy();
+                        chc.destroy();
                         this.iteration(false);
                     },this);
                 }
@@ -130,19 +132,22 @@ class frame1 extends Phaser.Scene {
             }, this)
     }
     iteration(flag){
-        let frm = this.add.image(925,540,'frame2').setInteractive({useHandCursor: true}).on('pointerup',()=>{
-            frm.destroy();
-            frm = this.add.image(925,540,'frame3').setInteractive({useHandCursor: true}).on('pointerup',()=>{
-                frm.destroy();
-                frm = this.add.image(925,540,'frame1').setInteractive({useHandCursor: true}).on('pointerup',()=>{
-                    if (flag) {
-                        this.scene.start('coffeehall');
-                    }
-                    else{
-                        this.scene.start('pchall');
-                    }
-                });
-            },this);
+        let positions = [[858,436],[1347,444]]; let i = 0;
+        let char = this.add.sprite(positions[i][0],positions[i][1],'char').setOrigin(0,0);
+        char.scale = 0.58;
+        let frmb = this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).on('pointerup',()=>{
+            ++i;
+            if (i<positions.length){
+                char.setPosition(positions[i][0],positions[i][1]);
+            }
+            else {
+                if (flag) {
+                    this.scene.start('coffeehall');
+                }
+                else{
+                    this.scene.start('pchall');
+                }
+            }
         },this)
     }
 }
@@ -151,20 +156,22 @@ class pchall extends Phaser.Scene {
         super('pchall')
     }
     create(){
-        let frames = ['hall0','hall1','hall2','hall3','hall4','pchall'];
+        let positions = [[97,439],[376,473],[680,507],[1137,473],[1504,500]];
         let i=0;
-        let frm = this.add.image(925,540,frames[i]);
-        frm.scale = 0.33
+        let frm = this.add.image(925,540,'hall');
+        let char = this.add.sprite(positions[0][0],positions[0][1],'char').setOrigin(0,0);
+        char.setVisible(false);
+        char.scale = 0.38;
         this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).on('pointerup',()=>{
-            ++i;
-            if (i<frames.length){
-                frm.destroy();
-                frm =  this.add.image(925,540,frames[i])
-                frm.scale = 0.33;
+            if (i<positions.length){
+                char.setVisible(true);
+                char.setFrame(i);
+                char.setPosition(positions[i][0],positions[i][1]);
             }
             else{
                 this.scene.start('pc');
             }
+            ++i;
         },this);
     }
 }
@@ -173,20 +180,26 @@ class coffeehall extends Phaser.Scene {
         super('coffeehall')
     }
     create(){
-        let frames = ['hall0','hall1','hall2','hall3','coffeehall'];
+        let positions = [[97,439],[376,473],[680,507],[854,441]];
         let i=0;
-        let frm = this.add.image(925,540,frames[i]);
-        frm.scale = 0.33
+        let frm = this.add.image(925,540,'hall');
+        let char = this.add.sprite(positions[0][0],positions[0][1],'char').setOrigin(0,0);
+        char.setVisible(false);
+        char.scale = 0.38;
         this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).on('pointerup',()=>{
-            ++i;
-            if (i<frames.length){
-                frm.destroy();
-                frm =  this.add.image(925,540,frames[i])
-                frm.scale = 0.33;
+            if (i<positions.length-1){
+                char.setVisible(true);
+                char.setFrame(i);
+                char.setPosition(positions[i][0],positions[i][1]);
+            }
+            else if (i == positions.length-1){
+                char.setFrame(0);
+                char.setPosition(positions[i][0],positions[i][1]);
             }
             else{
                 this.scene.start('kitchen');
             }
+            ++i;
         },this);
     }
 }
@@ -195,16 +208,18 @@ class kitchen extends Phaser.Scene {
         super('kitchen')
     }
     create(){
-        let frames = ['kitchen0','kitchen1']; let i=0;
+        let positions = [[406,436]]; let i = 0;
         let sqrs = ['emptycup','cup1','cup2','cup3','cup4','cup5','cup6','cup7']; let s = 0;
-        let frm = this.add.image(925,540,frames[i]);
+        let frm = this.add.image(925,540,'kitchen');
+        let char = this.add.sprite(positions[0][0],positions[0][1],'char').setOrigin(0,0);
+        char.setVisible(false);
         let sqr; let ok; let okb; let ov;
         let sqrb = this.add.zone(925,540,1024,1024);
         let frmb = this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).on('pointerup',()=>{
-            ++i;
-            if (i<frames.length){
-                frm.destroy();
-                frm =  this.add.image(925,540,frames[i])
+            if (i<positions.length){
+                char.setVisible(true);
+                char.setPosition(positions[i][0],positions[i][1]);
+                 ++i;
             }
             else{
                 frmb.destroy();
@@ -251,14 +266,17 @@ class kitchen extends Phaser.Scene {
                         ov.destroy();
                         --i;
                         frmb = this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).on('pointerup',()=>{
-                            frm.destroy();
                             --i;
                             if (i>=0){
-                                frm.destroy();
-                                frm =  this.add.image(925,540,frames[i])
+                                char.setVisible(true);
+                                char.setPosition(positions[i][0],positions[i][1]);
                             }
                             else{
-                                this.scene.start('coffeehall1');
+                                char.destroy();
+                                frmb.destroy();
+                                frmb = this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).on('pointerup',()=>{
+                                    this.scene.start('coffeehall1');
+                                },this);
                             }
                         },this)
                     },this)
@@ -277,20 +295,21 @@ class coffeehall1 extends Phaser.Scene {
         super('coffeehall1')
     }
     create(){
-        let frames = ['coffeehall','hall4','pchall'];
-        let i=0;
-        let frm = this.add.image(925,540,frames[i]);
-        frm.scale = 0.33
+        let positions = [[854,441],[1137,473],[1504,500]];
+        let i=1;
+        let frm = this.add.image(925,540,'hall');
+        let char = this.add.sprite(positions[0][0],positions[0][1],'char').setOrigin(0,0);
+        char.scale = 0.38;
         this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).on('pointerup',()=>{
-            ++i;
-            if (i<frames.length){
-                frm.destroy();
-                frm =  this.add.image(925,540,frames[i])
-                frm.scale = 0.33;
+            if (i<positions.length){
+                char.setVisible(true);
+                char.setFrame(i+2);
+                char.setPosition(positions[i][0],positions[i][1]);
             }
             else{
                 this.scene.start('pc');
             }
+            ++i;
         },this);
     }
 }
@@ -299,16 +318,19 @@ class pc extends Phaser.Scene {
         super('pc')
     }
     create(){
-        let frames =['pc0','pc1','pc2','pc3']; let i=0;
+        let positions =[[373,394],[828,394],[1259,392]]; let i=0;
         let sqrs = ['desktop0','desktop1','desktop2']; let s = 0;
-        let frm = this.add.image(925,540,frames[i]);
+        let frm = this.add.image(925,540,'pcbg');
+        let char = this.add.sprite(positions[0][0],positions[0][1],'char').setOrigin(0,0);
+        char.setVisible(false);
+        char.scale = 0.64;
         let sqr; let ok; let okb; let ov;
         let sqrb = this.add.zone(925,540,1024,1024);
         let frmb = this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).on('pointerup',()=>{
-            ++i;
-            if (i<frames.length){
-                frm.destroy();
-                frm =  this.add.image(925,540,frames[i])
+            if (i<positions.length){
+                char.setVisible(true);
+                char.setPosition(positions[i][0],positions[i][1]);
+                 ++i;
             }
             else{
                 frmb.destroy();
@@ -376,7 +398,12 @@ class videogame extends Phaser.Scene {
         let day = this.registry.get('days')-1;
         if (day > variations[0].length){
             var rnd = Phaser.Math.RND;
-            day = rnd.between(0,variations[0].length);
+            let mem = this.registry.get('rand');
+            do{
+                day = rnd.between(0,variations[0].length);
+            } while (day == mem[0]);
+            mem[0] = day;
+            this.registry.set(mem,'rand');
         }
         let i=0; let s= 0;
         let frm = this.add.image(925,540,'farm0');
@@ -542,9 +569,11 @@ class ev0 extends Phaser.Scene {
         super('ev0')
     }
     create(){
-        let frames = ['evpc0','evpc1','evpc2','evpc3']; let i = 0;
-        let sqrs = ['desktop2','desktop1','poweron','poweroff']; let s =0;
-        let frm = this.add.image(925,540,frames[i]);
+        let sqrs = ['desktop2','desktop1','poweron','poweroff']; let s=0;
+        let frm = this.add.image(925,540,'pcbg');
+        let char = this.add.sprite(1259,392,'char').setOrigin(0,0);
+        char.scale = 0.64;
+        this.add.image(925,540,'evlightpc');
         let ov = this.add.image(925,540,'overlay');
         let frmb = this.add.zone(925,540,1350,1080);
         let sqr = this.add.image(925,540,sqrs[s]);
@@ -573,41 +602,39 @@ class ev0 extends Phaser.Scene {
                 sqr.destroy();
                 sqrb.destroy();
                 ov.destroy();
-                frmb.setInteractive({useHandCursor: true})
-            }
-            frmb.on('pointerup',()=>{
-                frmb.destroy();
-                ov = this.add.image(925,540,'overlay');
-                this.add.image(925,540,'sleepnoodles');
-                let left =this.add.zone(498,623,345,92).setOrigin(0,0);
-                left.setInteractive({useHandCursor: true}); 
-                let right =this.add.zone(1051,623,345,92).setOrigin(0,0);
-                right.setInteractive({useHandCursor: true});
-                left.once('pointerup',()=>{
-                    left.destroy();
-                    right.destroy();
-                    frm.destroy();
-                    ov.destroy();
-                    this.iteration(false,frames);
-                },this);
-                right.once('pointerup',()=>{
-                    left.destroy();
-                    right.destroy();
-                    frm.destroy();
-                    ov.destroy();
-                    this.iteration(true,frames);
-                },this);
+                frmb.setInteractive({useHandCursor: true}).on('pointerup',()=>{
+                    frmb.destroy();
+                    ov = this.add.image(925,540,'overlay');
+                    let chc = this.add.image(925,540,'sleepnoodles');
+                    let left =this.add.zone(498,623,345,92).setOrigin(0,0);
+                    left.setInteractive({useHandCursor: true}); 
+                    let right =this.add.zone(1051,623,345,92).setOrigin(0,0);
+                    right.setInteractive({useHandCursor: true});
+                    left.on('pointerup',()=>{
+                        ov.destroy();
+                        chc.destroy();
+                        left.destroy();
+                        right.destroy();
+                        this.iteration(false,char);
+                    },this);
+                    right.on('pointerup',()=>{
+                        ov.destroy();
+                        chc.destroy();
+                        left.destroy();
+                        right.destroy();
+                        this.iteration(true,char);
+                    },this);
             },this);
+            }
         },this);
     }
-    iteration(flag,frames){
-        let i = 0;
-        let frm = this.add.image(925,540,frames[i]);
+    iteration(flag,char){
+        let positions =[[1259,392],[785,396],[293,401]]; let i=0;
         let frmb = this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).on('pointerup',()=>{
             ++i;
-            if (i<frames.length){
-                frm.destroy();
-                frm =  this.add.image(925,540,frames[i]);
+            if (i<positions.length){
+                char.setVisible(true);
+                char.setPosition(positions[i][0],positions[i][1]);
             }
             else{
                 if (flag){
@@ -625,20 +652,34 @@ class sleephall extends Phaser.Scene {
         super('sleephall')
     }
     create(){
-        let frames = ['evhall0','evhall1','evhall2','evhall3','evhall4','evhallbedroom'];
+        let positions = [[1515,511],[1133,479],[671,502],[374,470],[97,439]];
         let i=0;
-        let frm = this.add.image(925,540,frames[i]);
-        frm.scale = 0.33
+        let frm = this.add.image(925,540,'hall');
+        let char = this.add.sprite(positions[0][0],positions[0][1],'char').setOrigin(0,0);
+        char.setFlipX(true);
+        char.setVisible(false);
+        char.scale = 0.38;
+        let light = this.add.image(925,540,'evlighthall');
         this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).on('pointerup',()=>{
-            ++i;
-            if (i<frames.length){
-                frm.destroy();
-                frm =  this.add.image(925,540,frames[i])
-                frm.scale = 0.33;
+            if(i==0){
+                char.setVisible(true);
+                char.setFrame(4);
+            }
+            else if (i==4){
+                char.setVisible(true);
+                char.setFrame(0);
+                char.setFlipX(false);
+                char.setPosition(positions[i][0],positions[i][1]);
+            }
+            else if (i<positions.length){
+                char.setVisible(true);
+                char.setFrame(i);
+                char.setPosition(positions[i][0],positions[i][1]);
             }
             else{
                 this.scene.start('evbedroom');
             }
+            ++i;
         },this);
     }
 }
@@ -647,20 +688,34 @@ class noodleshall extends Phaser.Scene {
         super('noodleshall')
     }
     create(){
-        let frames = ['evhall0','evhall1','evhall2','evhallkitchen'];
+        let positions = [[1515,511],[1133,479],[854,441]];
         let i=0;
-        let frm = this.add.image(925,540,frames[i]);
-        frm.scale = 0.33
+        let frm = this.add.image(925,540,'hall');
+        let char = this.add.sprite(positions[0][0],positions[0][1],'char').setOrigin(0,0);
+        char.setFlipX(true);
+        char.setVisible(false);
+        char.scale = 0.38;
+        let light = this.add.image(925,540,'evlighthall');
         this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).on('pointerup',()=>{
-            ++i;
-            if (i<frames.length){
-                frm.destroy();
-                frm =  this.add.image(925,540,frames[i])
-                frm.scale = 0.33;
+             if(i==0){
+                char.setVisible(true);
+                char.setFrame(4);
+            }
+            else if (i==positions.length-1){
+                char.setVisible(true);
+                char.setFrame(0);
+                char.setFlipX(false);
+                char.setPosition(positions[i][0],positions[i][1]);
+            }
+            else if (i<positions.length){
+                char.setVisible(true);
+                char.setFrame(i);
+                char.setPosition(positions[i][0],positions[i][1]);
             }
             else{
                 this.scene.start('evkitchen');
             }
+            ++i;
         },this);
     }
 }
@@ -669,16 +724,19 @@ class evkitchen extends Phaser.Scene {
         super('evkitchen')
     }
     create(){
-        let frames = ['evkitchen0','evkitchen1']; let i=0;
+        let positions = [[406,436]]; let i = 0;
         let sqrs = ['kettle0','kettle1','noodles0','noodles1','noodles2','noodles3','noodles4','noodles5']; let s = 0;
-        let frm = this.add.image(925,540,frames[i]);
+        let frm = this.add.image(925,540,'evkitchen');;
+        let char = this.add.sprite(positions[0][0],positions[0][1],'char').setOrigin(0,0);
+        char.setVisible(false);
+        let light = this.add.image(925,540,'evlightkitchen')
         let sqr; let ok; let okb; let ov;
         let sqrb = this.add.zone(925,540,1024,1024);
         let frmb = this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).on('pointerup',()=>{
-            ++i;
-            if (i<frames.length){
-                frm.destroy();
-                frm =  this.add.image(925,540,frames[i])
+           if (i<positions.length){
+                char.setVisible(true);
+                char.setPosition(positions[i][0],positions[i][1]);
+                 ++i;
             }
             else{
                 frmb.destroy();
@@ -772,14 +830,17 @@ class evkitchen extends Phaser.Scene {
                 ov.destroy();
                 --i;
                 frmb = this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).on('pointerup',()=>{
-                    frm.destroy();
                     --i;
                     if (i>=0){
-                        frm.destroy();
-                        frm =  this.add.image(925,540,frames[i])
+                        char.setVisible(true);
+                        char.setPosition(positions[i][0],positions[i][1]);
                     }
                     else{
+                        char.destroy();
+                        frmb.destroy();
+                        frmb = this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).on('pointerup',()=>{
                             this.scene.start('noodleshall1');
+                        },this);
                     }
                 },this)
             }
@@ -791,20 +852,29 @@ class noodleshall1 extends Phaser.Scene {
         super('noodleshall1')
     }
     create(){
-        let frames = ['evhallkitchen','evhall3','evhall4','evhallbedroom'];
-        let i=0;
-        let frm = this.add.image(925,540,frames[i]);
-        frm.scale = 0.33
+        let positions = [[854,441],[671,502],[374,470],[97,439]];
+        let i=1;
+        let frm = this.add.image(925,540,'hall');
+        let char = this.add.sprite(positions[0][0],positions[0][1],'char').setOrigin(0,0);
+        char.scale = 0.38;
+        let light = this.add.image(925,540,'evlighthall');
         this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).on('pointerup',()=>{
-            ++i;
-            if (i<frames.length){
-                frm.destroy();
-                frm =  this.add.image(925,540,frames[i])
-                frm.scale = 0.33;
+            if(i==positions.length-1){
+                char.setVisible(true);
+                char.setFlipX(false);
+                char.setFrame(0);
+                char.setPosition(positions[i][0],positions[i][1]);
+            }
+            else if (i<positions.length){
+                char.setVisible(true);
+                char.setFlipX(true);
+                char.setFrame(i+1);
+                char.setPosition(positions[i][0],positions[i][1]);
             }
             else{
                 this.scene.start('evbedroom');
             }
+            ++i;
         },this);
     }
 }
@@ -813,18 +883,23 @@ class evbedroom extends Phaser.Scene {
         super('evbedroom')
     }
     create(){
-        let frames = ['evbed','evbed1','evbed2']; let i = 0;
+        let positions = [[1309,460],[887,454]]; let i = 0;
         let sqrs = ['phone0','phone1','phone2','phone3']; let s = 0;
         let txt0; let d = 0;
         let txt1 = 'Надеюсь ответит...';
         let day = this.registry.get('days')-1; let t;
         let txtvar = [['Хм...','Я давно не связывался со своей дочерью.','По-моему у нее скоро должен быть день рождения...','Надо бы ей написать...'],['Надо написать дочке.'],['Дочь всё ещё не отвечает...','Надо написать ещё раз.']];
-         if (day < txtvar.length){
+        if (day < txtvar.length){
             txt0 = txtvar[day];
         }
         else{
             var rnd = Phaser.Math.RND;
-            t = rnd.between(1,txtvar.length-1);
+            let mem = this.registry.get('rand');
+            do{
+                t = rnd.between(1,txtvar.length-1);
+            } while (day == mem[1]);
+            mem[1] = day;
+            this.registry.set(mem,'rand');
             txt0 = txtvar[t];
         }
         if (day < 7){
@@ -832,19 +907,27 @@ class evbedroom extends Phaser.Scene {
         }
         else{
             var rnd = Phaser.Math.RND;
-            t = rnd.between(1,6);
+            let mem = this.registry.get('rand');
+            do{
+                t = rnd.between(1,6);
+            } while (day == mem[2]);
+            mem[2] = day;
+            this.registry.set(mem,'rand');
             sqrs[3] += t.toString();
         }
-        console.log(sqrs[3]);
         let sqrb = this.add.zone(925,540,1024,1024);
         let ok; let okb; let sqr; let ov;
-        let frm = this.add.image(925,540,frames[i]);
+        let frm = this.add.image(925,540,'evbedroom');
+        let char = this.add.sprite(positions[i][0],positions[i][1],'char').setOrigin(0,0);
+        char.scale = 0.58;
+        char.setVisible(false);
+        let light = this.add.image(925,540,'evlightbedroom');
         let frmb = this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).on('pointerup',()=>{
-            ++i;
-            if (i<frames.length){
-                frm.destroy();
-                frm =  this.add.image(925,540,frames[i])
-            }
+            if (i<positions.length){
+                char.setVisible(true);
+                char.setPosition(positions[i][0],positions[i][1]);
+                ++i;
+        }
             else if (d == 0){
                 ov = this.add.image(925,540,'overlay');
                 this.scene.launch('dlg',[txt0[d],'0']);

@@ -31,7 +31,7 @@ class mainmenu extends Phaser.Scene{
         });
         btn.on('pointerup',()=>{
             this.scene.launch('ui');
-            this.scene.start('frame0');
+            this.scene.switch('frame0');
         },this);
     }
 }
@@ -58,6 +58,116 @@ class ui extends Phaser.Scene{
         });
         this.registry.events.on('changedata', this.updateScore, this);
         this.input.on('pointerup',()=>{this.registry.set('clicks',this.registry.get('clicks')+1)},this);
+        //restart button:
+        let btn = this.make.text({
+            x:1845, y:5,
+             style: {
+                fontFamily:'determination',
+                fontSize: '32px',
+                color:'#ffffff',
+                backgroundColor:"#000000",
+                align:'right',
+            },
+            text:'>restart',
+            add:true
+        }).setOrigin(1,0)
+        btn.setInteractive({useHandCursor:true});
+        btn.on('pointerover',()=>{
+            btn.setBackgroundColor('#ffffff');
+            btn.setColor('#000000');
+        },this);
+        btn.on('pointerout',()=>{
+            btn.setBackgroundColor('#000000');
+            btn.setColor('#ffffff');
+        },this);
+        btn.on('pointerup',()=>{
+            btn.disableInteractive();
+            btn.setVisible();
+            warning.setVisible(true);
+            yes.setVisible(true);
+            no.setVisible(true);
+            yes.setInteractive({useHandCursor:true})
+            no.setInteractive({useHandCursor:true})
+        })
+        let warning = this.make.text({
+            x:1845, y:40,
+             style: {
+                fontFamily:'determination',
+                fontSize: '32px',
+                color:'#ffffff',
+                backgroundColor:"#000000",
+                align:'right',
+            },
+            text:'are you sure?',
+            add:true
+        }).setOrigin(1,0);
+        warning.setVisible(false);
+        let yes = this.make.text({
+            x:1845, y:75,
+             style: {
+                fontFamily:'determination',
+                fontSize: '90px',
+                color:'#ffffff',
+                backgroundColor:"#000000",
+                align:'right',
+            },
+            text:'>yes',
+            add:true
+        }).setOrigin(1,0)
+        yes.setVisible(false)
+        let no = this.make.text({
+            x:1845, y:200,
+             style: {
+                fontFamily:'determination',
+                fontSize: '90px',
+                color:'#ffffff',
+                backgroundColor:"#000000",
+                align:'right',
+            },
+            text:'>no',
+            add:true
+        }).setOrigin(1,0);
+        no.setVisible(false);
+        no.on('pointerover',()=>{
+            no.setBackgroundColor('#ffffff');
+            no.setColor('#000000');
+        },this);
+        no.on('pointerout',()=>{
+            no.setBackgroundColor('#000000');
+            no.setColor('#ffffff');
+        },this);
+        yes.on('pointerover',()=>{
+            yes.setBackgroundColor('#ffffff');
+            yes.setColor('#000000');
+        },this);
+        yes.on('pointerout',()=>{
+            yes.setBackgroundColor('#000000');
+            yes.setColor('#ffffff');
+        },this);
+        no.on('pointerup',()=>{
+            no.disableInteractive();
+            yes.disableInteractive();
+            warning.setVisible(false);
+            yes.setVisible(false);
+            no.setVisible(false);
+            no.setBackgroundColor('#000000');
+            no.setColor('#ffffff');
+            btn.setBackgroundColor('#000000');
+            btn.setColor('#ffffff');
+            btn.setVisible(true);
+            btn.setInteractive({useHandCursor:true});
+        },this)
+        yes.on('pointerup',()=>{
+            let scs = ['frame0','frame1','pchall','coffeehall','kitchen','coffeehall1','pc','videogame','ev0','sleephall','noodleshall','evkitchen','noodleshall1','evbedroom','transition','dlg'];
+            for (let i = 0;i<scs.length;++i){
+                    this.scene.stop(scs[i]);
+            }
+            this.registry.set('clicks', -1);
+            this.registry.set('days', 1);
+            this.registry.set('rand',[-1,-1,-1]);
+            this.scene.wake('mainmenu');
+            this.scene.stop('ui');
+        },this);
     }
     updateScore(parent,key,data){
         this.scoreText.setText('день: '+this.registry.get('days')+'\nкликов: '+this.registry.get('clicks'));
@@ -69,6 +179,7 @@ class frame0 extends Phaser.Scene {
     }
     init(){}
     create(){
+        this.cameras.main.fadeIn(1000);
         let frm = this.add.sprite(925,540,'frame0').setInteractive({useHandCursor: true});
         frm.scale = 2.25;
         frm.play('frame0gif',true);
@@ -974,6 +1085,7 @@ class evbedroom extends Phaser.Scene {
                             frm = this.add.sprite(925,540,'frame0');
                             frm.scale = 2.25;
                             frm.play('frame0gif',true);
+                            this.cameras.main.fadeOut(2000);
                             frmb = this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).on('pointerup',()=>{this.scene.start('transition')},this);
                         },this);
                     },this);
@@ -990,6 +1102,7 @@ class transition extends Phaser.Scene {
         let days = this.registry.get('days');
         ++days;
         this.registry.set('days',days);
+        this.cameras.main.fadeIn(1000);
         this.make.text({
             style: {
                 fontFamily:'determination',
@@ -1006,7 +1119,11 @@ class transition extends Phaser.Scene {
             add:true
         }).setOrigin(0.5, 0.5)
         this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).on('pointerup',()=>{
-            this.scene.start('frame0');
+            this.cameras.main.fadeOut(1000,0,0,0,(camera,progress)=>{
+                if (progress == 1){
+                    this.scene.start('frame0');
+                }
+            });
         },this)
     }
 }

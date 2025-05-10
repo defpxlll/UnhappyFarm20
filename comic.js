@@ -144,7 +144,7 @@ class load extends Phaser.Scene {
         // this.load.image('pc1','assets/pc1.png');
         // this.load.image('pc2','assets/pc2.png');
         // this.load.image('pc3','assets/pc3.png');
-        this.load.image('pchall','assets/pchall.jpg');
+        // this.load.image('pchall','assets/pchall.jpg');
         this.load.image('phone0','assets/phone0.png');
         this.load.image('phone1','assets/phone1.png');
         this.load.image('phone2','assets/phone2.png');
@@ -179,13 +179,13 @@ class load extends Phaser.Scene {
             frameHeight:1006
         })
         this.load.on('progress', function (value) {
-            console.log(value);
+            // console.log(value);
             bar.clear();
             bar.fillStyle(0x999999,1);
             bar.fillRect(275,447,1300*value,186);
         });
         this.load.on('complete',function(){
-            console.log('done');
+            // console.log('done');
         })
     }
     create(){

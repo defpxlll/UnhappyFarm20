@@ -273,7 +273,7 @@ class pchall extends Phaser.Scene {
         let char = this.add.sprite(positions[0][0],positions[0][1],'char').setOrigin(0,0);
         char.setVisible(false);
         char.scale = 0.38;
-        this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).on('pointerup',()=>{
+        this.add.zone(925,540,1850,774).setInteractive({useHandCursor: true}).on('pointerup',()=>{
             if (i<positions.length){
                 char.setVisible(true);
                 char.setFrame(i);
@@ -297,7 +297,7 @@ class coffeehall extends Phaser.Scene {
         let char = this.add.sprite(positions[0][0],positions[0][1],'char').setOrigin(0,0);
         char.setVisible(false);
         char.scale = 0.38;
-        this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).on('pointerup',()=>{
+        this.add.zone(925,540,1850,774).setInteractive({useHandCursor: true}).on('pointerup',()=>{
             if (i<positions.length-1){
                 char.setVisible(true);
                 char.setFrame(i);
@@ -411,7 +411,7 @@ class coffeehall1 extends Phaser.Scene {
         let frm = this.add.image(925,540,'hall');
         let char = this.add.sprite(positions[0][0],positions[0][1],'char').setOrigin(0,0);
         char.scale = 0.38;
-        this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).on('pointerup',()=>{
+        this.add.zone(925,540,1850,774).setInteractive({useHandCursor: true}).on('pointerup',()=>{
             if (i<positions.length){
                 char.setVisible(true);
                 char.setFrame(i+2);
@@ -771,7 +771,7 @@ class sleephall extends Phaser.Scene {
         char.setVisible(false);
         char.scale = 0.38;
         let light = this.add.image(925,540,'evlighthall');
-        this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).on('pointerup',()=>{
+        this.add.zone(925,540,1850,774).setInteractive({useHandCursor: true}).on('pointerup',()=>{
             if(i==0){
                 char.setVisible(true);
                 char.setFrame(4);
@@ -807,7 +807,7 @@ class noodleshall extends Phaser.Scene {
         char.setVisible(false);
         char.scale = 0.38;
         let light = this.add.image(925,540,'evlighthall');
-        this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).on('pointerup',()=>{
+        this.add.zone(925,540,1850,774).setInteractive({useHandCursor: true}).on('pointerup',()=>{
              if(i==0){
                 char.setVisible(true);
                 char.setFrame(4);
@@ -969,7 +969,7 @@ class noodleshall1 extends Phaser.Scene {
         let char = this.add.sprite(positions[0][0],positions[0][1],'char').setOrigin(0,0);
         char.scale = 0.38;
         let light = this.add.image(925,540,'evlighthall');
-        this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).on('pointerup',()=>{
+        this.add.zone(925,540,1850,774).setInteractive({useHandCursor: true}).on('pointerup',()=>{
             if(i==positions.length-1){
                 char.setVisible(true);
                 char.setFlipX(false);
@@ -1085,8 +1085,13 @@ class evbedroom extends Phaser.Scene {
                             frm = this.add.sprite(925,540,'frame0');
                             frm.scale = 2.25;
                             frm.play('frame0gif',true);
-                            this.cameras.main.fadeOut(2000);
-                            frmb = this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).on('pointerup',()=>{this.scene.start('transition')},this);
+                            frmb = this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).on('pointerup',()=>{
+                                this.cameras.main.fadeOut(1500,0,0,0,(camera,progress)=>{
+                                    if (progress ==1){
+                                        this.scene.start('transition')
+                                    }
+                                });
+                            },this);
                         },this);
                     },this);
                 },this);

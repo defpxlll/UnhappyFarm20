@@ -1123,7 +1123,7 @@ class transition extends Phaser.Scene {
             text: "ДЕНЬ " + days,
             add:true
         }).setOrigin(0.5, 0.5)
-        this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).on('pointerup',()=>{
+        this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).once('pointerup',()=>{
             this.cameras.main.fadeOut(1000,0,0,0,(camera,progress)=>{
                 if (progress == 1){
                     this.scene.start('frame0');

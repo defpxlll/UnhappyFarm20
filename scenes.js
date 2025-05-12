@@ -179,7 +179,7 @@ class frame0 extends Phaser.Scene {
     }
     init(){}
     create(){
-        this.cameras.main.fadeIn(1000);
+        this.cameras.main.fadeIn(750);
         let frm = this.add.sprite(925,540,'frame0').setInteractive({useHandCursor: true});
         frm.scale = 2.25;
         frm.play('frame0gif',true);
@@ -654,7 +654,12 @@ class videogame extends Phaser.Scene {
                                         sqrb.destroy();
                                         ov.destroy();
                                         frmb = this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).on('pointerup',()=>{
-                                            this.scene.start('ev0');
+                                            frm.destroy();
+                                            frmb.destroy();
+                                            frm = this.add.image(925,540,'farm4');
+                                            left = this.add.zone(1322,71,261,124).setOrigin(0,0).setInteractive({useHandCursor: true}).on('pointerup',()=>{
+                                                this.scene.start('ev0');
+                                            },this);
                                         },this);
                                     },this);
                                 },this);
@@ -670,7 +675,12 @@ class videogame extends Phaser.Scene {
                                         sqrb.destroy();
                                         ov.destroy();
                                         frmb = this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).on('pointerup',()=>{
-                                            this.scene.start('ev0');
+                                            frm.destroy();
+                                            frmb.destroy();
+                                            frm = this.add.image(925,540,'farm4');
+                                            left = this.add.zone(1322,71,261,124).setOrigin(0,0).setInteractive({useHandCursor: true}).on('pointerup',()=>{
+                                                this.scene.start('ev0');
+                                            },this);
                                         },this);
                                     },this);
                                 },this);
@@ -1092,8 +1102,8 @@ class evbedroom extends Phaser.Scene {
                             frm = this.add.sprite(925,540,'frame0');
                             frm.scale = 2.25;
                             frm.play('frame0gif',true);
-                            frmb = this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).on('pointerup',()=>{
-                                this.cameras.main.fadeOut(1500,0,0,0,(camera,progress)=>{
+                            frmb = this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).once('pointerup',()=>{
+                                this.cameras.main.fadeOut(750,0,0,0,(camera,progress)=>{
                                     if (progress ==1){
                                         this.scene.start('transition')
                                     }
@@ -1114,7 +1124,7 @@ class transition extends Phaser.Scene {
         let days = this.registry.get('days');
         ++days;
         this.registry.set('days',days);
-        this.cameras.main.fadeIn(1000);
+        this.cameras.main.fadeIn(750);
         this.make.text({
             style: {
                 fontFamily:'determination',
@@ -1131,7 +1141,7 @@ class transition extends Phaser.Scene {
             add:true
         }).setOrigin(0.5, 0.5)
         this.add.zone(925,540,1350,1080).setInteractive({useHandCursor: true}).once('pointerup',()=>{
-            this.cameras.main.fadeOut(1000,0,0,0,(camera,progress)=>{
+            this.cameras.main.fadeOut(750,0,0,0,(camera,progress)=>{
                 if (progress == 1){
                     this.scene.start('frame0');
                 }

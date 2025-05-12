@@ -197,13 +197,13 @@ class load extends Phaser.Scene {
         });
         this.anims.create({
             key: 'pcgif',
-            frames: 'pc',
+            frames: this.anims.generateFrameNumbers('pc',{frames:[0,1,2,3,4,5,6,7,8,9,10,11,12]}),
             frameRate: 6,
             repeat: -1
         });
         this.anims.create({
             key: 'loadgif',
-            frames: 'load',
+            frames: this.anims.generateFrameNumbers('load',{frames:[0,1,2,3,4,5,6,7,8,9,10,11,12]}),
             frameRate: 8,
             repeat: 0
         });

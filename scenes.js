@@ -183,18 +183,24 @@ class frame0 extends Phaser.Scene {
         let frm = this.add.sprite(925,540,'frame0').setInteractive({useHandCursor: true});
         frm.scale = 2.25;
         frm.play('frame0gif',true);
-        frm.once(
+        frm.on(
             'pointerup',
             ()=>{
-                frm.removeInteractive();
-                this.add.image(925,540,'overlay');
-                this.add.image(925,540,'choice0');
+                frm.disableInteractive();
+                let ov = this.add.image(925,540,'overlay');
+                let chc = this.add.image(925,540,'choice0');
                 let left =this.add.zone(498,623,345,92).setOrigin(0,0);
                 left.setInteractive({useHandCursor: true});
                 let right =this.add.zone(1051,623,345,92).setOrigin(0,0);
                 right.setInteractive({useHandCursor: true});
-                left.once('pointerup',()=>{this.scene.start("frame0");},this);
-                right.once('pointerup',()=>{this.scene.start("frame1");});
+                left.on('pointerup',()=>{
+                    chc.destroy();
+                    ov.destroy();
+                    left.destroy();
+                    right.destroy();
+                    frm.setInteractive({useHandCursor: true});
+                },this);
+                right.on('pointerup',()=>{this.scene.start("frame1");});
             },this);
     }
 }
@@ -490,10 +496,11 @@ class pc extends Phaser.Scene {
                     okb.destroy();
                     sqr.destroy();
                     frm.destroy();
+                    char.destroy();
                     frm = this.add.sprite(925,540,'load');
                     frm.scale = 1.69;
                     frm.play('loadgif',true);
-                    var timer = this.time.delayedCall(1700, ()=>{this.scene.start('videogame')}, this); 
+                    var timer = this.time.delayedCall(1800, ()=>{this.scene.start('videogame')}, this); 
                 },this);
             }
             ++s;

@@ -4,7 +4,6 @@
      }
     * { padding: 0; margin: 0; }
     #wrap{
-        height:85vh;
         aspect-ratio: 1300/768;
         position:absolute;
         top:50%;
@@ -14,4 +13,10 @@
     body{
         background-color: black;
         touch-action: none;
+    }
+    @media only screen and (orientation:landscape){
+        #wrap{height:85vh;}
+    }
+     @media only screen and (orientation:portrait){
+        #wrap{width:85vw;}
     }
